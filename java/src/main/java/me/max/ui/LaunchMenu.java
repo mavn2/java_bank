@@ -26,7 +26,8 @@ public class LaunchMenu implements Menu {
 		//Execute code based on user choice
 		switch (choice) {
 		case 1:
-			System.out.println("go to login menu");
+			Menu loginMenu = new LoginMenu();
+			loginMenu.display();
 			break;
 		case 2:
 			System.out.println("create account");
