@@ -1,10 +1,18 @@
 package me.max.main;
 
+import java.sql.SQLException;
+
+import me.max.util.ConnectionUtil;
+
 public class Application {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		//Testing
+		try {
+			System.out.println(ConnectionUtil.getConnection());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
