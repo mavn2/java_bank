@@ -8,5 +8,6 @@ import java.sql.SQLException;
 // so defined separately from related methods
 public interface ValidationDAO {
 	public boolean validateUserName(Connection con, String name) throws SQLException;
+
 	public boolean validateUserPassword(Connection con, String pass) throws SQLException;
 }

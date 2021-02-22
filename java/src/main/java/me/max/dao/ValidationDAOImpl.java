@@ -12,21 +12,21 @@ public class ValidationDAOImpl implements ValidationDAO {
 	public boolean validateUserName(Connection con, String name) throws SQLException {
 		// Possible sql errors are handled within the method,
 		// lets LoginMenu object continue running/give feedback to user
-			//Prepared statement accepts limited values, and returns limited data
-			String sql = "SELECT user_id FROM bank_app.users WHERE user_name = ?";
-			PreparedStatement ps = con.prepareStatement(sql);
-			//Set ? in sql string = to username passed in as param
-			ps.setString(1, name);
-			//Query the database, and store results
-			ResultSet rs = ps.executeQuery();
-			
-			//If a result has been returned, return true
-			if(rs.next()) {
-				return true;
-			}
-			
-			//If above evaluates to false (no results)
-			return false;
+		// Prepared statement accepts limited values, and returns limited data
+		String sql = "SELECT user_id FROM bank_app.users WHERE user_name = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		// Set ? in sql string = to username passed in as param
+		ps.setString(1, name);
+		// Query the database, and store results
+		ResultSet rs = ps.executeQuery();
+
+		// If a result has been returned, return true
+		if (rs.next()) {
+			return true;
+		}
+
+		// If above evaluates to false (no results)
+		return false;
 	}
 
 	@Override

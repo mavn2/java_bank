@@ -11,27 +11,25 @@ import me.max.util.ConnectionUtil;
 public class ValidationService {
 	// V.DAO object available when this class is instantiated
 	public ValidationDAO validationDAO;
-	
-	//Custom no args constructor creates an object for above
-	public ValidationService(){
+
+	// Custom no args constructor creates an object for above
+	public ValidationService() {
 		this.validationDAO = new ValidationDAOImpl();
 	}
-	
+
 	// Checks user input against database and returns result
 	public boolean validateUsername(String username) throws SQLException, UserNotFoundException {
-		//Try with resources ensures connection is closed
-		try(Connection con = ConnectionUtil.getConnection()) {
+		// Try with resources ensures connection is closed
+		try (Connection con = ConnectionUtil.getConnection()) {
 			String name = username;
-			
-			//Assign the results of query to a variable
+
+			// Assign the results of query to a variable
 			boolean result = validationDAO.validateUserName(con, name);
-			
-			System.out.println(result);
-			
-			if(result == false) {
+
+			if (result == false) {
 				throw new UserNotFoundException("Username " + name + " does not Exist!");
 			}
-			
+
 			return result;
 		}
 	}
