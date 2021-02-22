@@ -61,6 +61,9 @@ public class LoginMenu implements Menu {
 			}
 
 		} while (password == null);
-	}
 
+		Menu userMenu = new UserMenu();
+
+		userMenu.display();
+	}
 }
