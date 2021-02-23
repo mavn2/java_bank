@@ -13,10 +13,6 @@ public class UserMenu implements Menu {
 		this.user = u;
 	}
 	
-	//Temp no args
-	public UserMenu() {
-	}
-	
 	@Override
 	public void display() {
 		
