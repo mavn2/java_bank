@@ -6,8 +6,6 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
-
-	
 	
 	//Default/blank no args constructor
 	public User() {

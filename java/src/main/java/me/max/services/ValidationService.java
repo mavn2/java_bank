@@ -28,7 +28,7 @@ public class ValidationService {
 			boolean result = validationDAO.validateUserName(con, name);
 
 			if (result == false) {
-				throw new UserNotFoundException("Username " + name + " does not Exist!");
+				throw new UserNotFoundException("Username " + name + " was not found.");
 			}
 
 			return result;
