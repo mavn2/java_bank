@@ -1,6 +1,5 @@
 package me.max.services;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -27,8 +26,8 @@ public class UserServiceTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
 		userDAO = mock(UserDAO.class);
-		Connection con = any(Connection.class);
-		when(userDAO.getUserByUsername(con, eq("testingTest"))).thenReturn(new User("testingTest", "test", "complete", "1234567890"));
+		when(userDAO.getUserByUsername(any(Connection.class), eq("testingTest"))).thenReturn(new User("testingTest", "test", "complete", "1234567890"));
+		when(userDAO.insertNewUser(any(Connection.class), eq("test123"), eq("John"), eq("Doe"), eq("0123456789"))).thenReturn(new User("test123", "John", "Doe", "0123456789"));
 	}
 	
 	@AfterClass
