@@ -22,12 +22,15 @@ public class UserDAOImpl implements UserDAO {
 		ResultSet rs = ps.executeQuery();
 		
 		if(rs.next()) {
+			//Retrieve values from returned object
 			String userName = rs.getString("user_name");
 			String firstName = rs.getString("first_name");
 			String lastName = rs.getString("last_name");
 			String phoneNumber = rs.getString("phone_number");
+			int type = rs.getInt("user_class");
 			
-			result = new User(userName, firstName, lastName, phoneNumber);
+			//Use those to create new User object
+			result = new User(userName, firstName, lastName, phoneNumber, type);
 			}
 		
 		return result;

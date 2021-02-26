@@ -6,13 +6,24 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
+	private int type;
 	
 	//Default/blank no args constructor
 	public User() {
 		super();
 	}
 
-	// Constructor takes all required fields
+	// Constructor with all fields in DB
+	public User(String username, String firstName, String lastName, String phoneNumber, int type) {
+		super();
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.type = type;
+	}
+	
+	// Constructor with minimum fields required for insertion into db
 	public User(String username, String firstName, String lastName, String phoneNumber) {
 		super();
 		this.username = username;
@@ -20,7 +31,8 @@ public class User {
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
 	}
-	//No current case for incomplete user objects,
+
+	//No current case for other incomplete user objects,
 	//so no further constructors. Either blank or ready for db.
 	
 	
@@ -56,16 +68,22 @@ public class User {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+	public int getType() {
+		return type;
+	}
 
+	public void setType(int type) {
+		this.type = type;
+	}
+	
 	//Class specific overrides for inherited methods
 	//toString, hashCode, equals
-	
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
-				+ phoneNumber + "]";
-		
-	
+				+ phoneNumber + ", type=" + type + "]";
 	}
 
 	@Override
@@ -75,6 +93,7 @@ public class User {
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+		result = prime * result + type;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -102,6 +121,8 @@ public class User {
 			if (other.phoneNumber != null)
 				return false;
 		} else if (!phoneNumber.equals(other.phoneNumber))
+			return false;
+		if (type != other.type)
 			return false;
 		if (username == null) {
 			if (other.username != null)

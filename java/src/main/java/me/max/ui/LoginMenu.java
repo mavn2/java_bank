@@ -40,7 +40,6 @@ public class LoginMenu implements Menu {
 				System.out.println("Please try again.");
 			}
 		} while (username == null);
-		System.out.println(username);
 		// Second, check for password matching saved username
 		do {
 			String inputpass;
