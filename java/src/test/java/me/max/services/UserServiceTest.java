@@ -68,6 +68,7 @@ public class UserServiceTest {
 	
 	@Test(expected = UserCreationException.class)
 	public void testUserCreationFailure() throws Exception {
+		@SuppressWarnings("unused")
 		User actual = userService.createNewUser("this", "number", "is", "wrong", "waymorethanthetendigitsacleanedphonenumberwouldadd");
 
 	}

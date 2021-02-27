@@ -1,7 +1,7 @@
 package me.max.ui;
 
 // Run on application launch, pass to login or create account
-public class LaunchMenu implements Menu {
+public class MainMenu implements Menu {
 	public void display() {
 		// User input is tracked in this integer var
 		int choice = 0;
@@ -12,9 +12,9 @@ public class LaunchMenu implements Menu {
 			System.out.println("Welcome To Bank");
 			System.out.println("===============");
 			System.out.println("*Please choose an option to continue*");
-			System.out.println("1.) Sign in to Account.");
-			System.out.println("2.) Create New Account.");
-			System.out.println("3.) Exit Application.");
+			System.out.println("1.) Exit Application");
+			System.out.println("2.) Create New Account");
+			System.out.println("3.) Sign in to account");
 
 			// Listen for user input/assign to choice var,
 			// throws exception if invalid
@@ -26,19 +26,19 @@ public class LaunchMenu implements Menu {
 			// Execute code based on user choice
 			switch (choice) {
 			case 1:
-				Menu loginMenu = new LoginMenu();
-				loginMenu.display();
+				System.out.println("Shutting down");
 				break;
 			case 2:
 				System.out.println("create account");
 				break;
 			case 3:
-				System.out.println("Thank you for using Bank!");
+				Menu loginMenu = new LoginMenu();
+				loginMenu.display();
 				break;
 			default:
 				System.out.println("Please enter a valid choice or number.");
 			}
 
-		} while (choice != 3);
+		} while (choice != 1);
 	}
 }
