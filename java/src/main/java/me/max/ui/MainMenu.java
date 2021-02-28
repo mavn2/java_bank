@@ -29,14 +29,15 @@ public class MainMenu implements Menu {
 				System.out.println("Shutting down");
 				break;
 			case 2:
-				System.out.println("create account");
+				Menu newMenu = new UserCreationMenu();
+				newMenu.display();
 				break;
 			case 3:
 				Menu loginMenu = new LoginMenu();
 				loginMenu.display();
 				break;
 			default:
-				System.out.println("Please enter a valid choice or number.");
+				System.out.println("Please enter a valid selection.");
 			}
 
 		} while (choice != 1);

@@ -41,12 +41,11 @@ public class UserService {
 	}
 
 	public User createNewUser(String username, String password, String firstName, String lastName, String phoneNumber)
-			throws SQLException, UserCreationException
-			{
+			throws SQLException, UserCreationException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			
+
 			User result = userDAO.insertNewUser(con, username, password, firstName, lastName, phoneNumber);
-			
+
 			if (result == null) {
 				throw new UserCreationException("User could not be created.");
 			}

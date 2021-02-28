@@ -1,7 +1,5 @@
 package me.max.main;
 
-import java.sql.SQLException;
-
 import me.max.ui.MainMenu;
 import me.max.ui.Menu;
 
