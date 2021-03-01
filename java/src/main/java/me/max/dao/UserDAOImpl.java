@@ -13,7 +13,7 @@ public class UserDAOImpl implements UserDAO {
 	public User getUserByUsername(Connection con, String name) throws SQLException {
 
 		User result = null;
-		
+
 		String sql = "SELECT * FROM bank_app.users WHERE user_name = ?";
 
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -39,31 +39,31 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User insertNewUser(Connection con, String username, String password, String firstName, String lastName, String phoneNumber)
-			throws SQLException {
-		@SuppressWarnings("unused") //given an object to reference and returned
+	public User insertNewUser(Connection con, String username, String password, String firstName, String lastName,
+			String phoneNumber) throws SQLException {
+		@SuppressWarnings("unused") // given an object to reference and returned
 		User result = null;
-		
+
 		String sql = "INSERT INTO bank_app.users (user_name, user_password, first_name, last_name, phone_number)"
-				+ "	VALUES (?,?,?,?,?)";
-		
-		//Insert param values into prepared string
+				+ "	VALUES (?,?,?,?,?);";
+
+		// Insert param values into prepared string
 		PreparedStatement ps = con.prepareStatement(sql);
-		
+
 		ps.setString(1, username);
 		ps.setString(2, password);
 		ps.setString(3, firstName);
 		ps.setString(4, lastName);
 		ps.setString(5, phoneNumber);
-		
-		//If succesful, executeUpdate() should return 1
+
+		// If succesful, executeUpdate() should return 1
 		int count = ps.executeUpdate();
-		
-		if (count!= 1) {
+
+		if (count != 1) {
 			throw new SQLException("Account creation failed.");
 		}
-		
-		//Create new user-all info required is already present, since type will be default
+
+		// Type will be one by default
 		int type = 1;
 		return result = new User(username, firstName, lastName, phoneNumber, type);
 	}
