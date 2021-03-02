@@ -28,9 +28,9 @@ public class UserServiceTest {
 	public static void setUpBeforeClass() throws Exception {
 		userDAO = mock(UserDAO.class);
 		when(userDAO.getUserByUsername(any(Connection.class), eq("testingTest")))
-				.thenReturn(new User("testingTest", "test", "complete", "1234567890"));
+				.thenReturn(new User("testingTest", "test", "complete", "1234567890", 1));
 		when(userDAO.insertNewUser(any(Connection.class), eq("test123"), eq("password"), eq("John"), eq("Doe"),
-				eq("0123456789"))).thenReturn(new User("test123", "John", "Doe", "0123456789"));
+				eq("0123456789"))).thenReturn(new User("test123", "John", "Doe", "0123456789", 1));
 	}
 
 	@AfterClass
@@ -44,12 +44,12 @@ public class UserServiceTest {
 
 	@After
 	public void tearDown() throws Exception {
-	};
+	}
 
 	@Test
 	public void testGetUserByUsername() throws Exception {
 		User actual = userService.getUserByUsername("testingTest");
-		User expected = new User("testingTest", "test", "complete", "1234567890");
+		User expected = new User("testingTest", "test", "complete", "1234567890", 1);
 		assertEquals(expected, actual);
 	}
 
@@ -62,7 +62,7 @@ public class UserServiceTest {
 	@Test
 	public void testUserCreation() throws Exception {
 		User actual = userService.createNewUser("test123", "password", "John", "Doe", "0123456789");
-		User expected = new User("test123", "John", "Doe", "0123456789");
+		User expected = new User("test123", "John", "Doe", "0123456789", 1);
 		assertEquals(expected, actual);
 	}
 
