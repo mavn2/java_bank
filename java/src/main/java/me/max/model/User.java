@@ -7,8 +7,8 @@ public class User {
 	private String lastName;
 	private String phoneNumber;
 	private int type;
-	
-	//Default/blank no args constructor
+
+	// Default/blank no args constructor
 	public User() {
 		super();
 	}
@@ -22,7 +22,7 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.type = type;
 	}
-	
+
 	// Constructor with minimum fields required for insertion into db
 	public User(String username, String firstName, String lastName, String phoneNumber) {
 		super();
@@ -32,11 +32,10 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	//No current case for other incomplete user objects,
-	//so no further constructors. Either blank or ready for db.
-	
-	
-	//Getters/Setters for private vars above
+	// No current case for other incomplete user objects,
+	// so no further constructors. Either blank or ready for db.
+
+	// Getters/Setters for private vars above
 	public String getUsername() {
 		return username;
 	}
@@ -68,7 +67,7 @@ public class User {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	public int getType() {
 		return type;
 	}
@@ -76,9 +75,9 @@ public class User {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	//Class specific overrides for inherited methods
-	//toString, hashCode, equals
+
+	// Class specific overrides for inherited methods
+	// toString, hashCode, equals
 
 	@Override
 	public String toString() {
@@ -130,5 +129,5 @@ public class User {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
-	}	
+	}
 }
