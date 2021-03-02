@@ -19,7 +19,7 @@ public class UserService {
 		this.userDAO = new UserDAOImpl();
 	}
 
-	// Constructor for use in testing, allows mock DAO to be entered as parm
+	// Constructor for use in testing, allows mock DAO to be entered as param
 	public UserService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
@@ -49,6 +49,7 @@ public class UserService {
 			if (result == null) {
 				throw new UserCreationException("User could not be created.");
 			}
+			
 			return result;
 		}
 	}
