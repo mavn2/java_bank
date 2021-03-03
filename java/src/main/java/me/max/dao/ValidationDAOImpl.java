@@ -12,7 +12,7 @@ public class ValidationDAOImpl implements ValidationDAO {
 	public boolean validateUserName(Connection con, String name) throws SQLException {
 		// Prepared statement protects against SQL injection
 		// Validation methods query/return limited, non-identifying data
-		String sql = "SELECT user_class FROM bank_app.users WHERE user_name = ?";
+		String sql = "SELECT user_type FROM bank_app.users WHERE user_name = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 
@@ -35,7 +35,7 @@ public class ValidationDAOImpl implements ValidationDAO {
 	public boolean validateUserPassword(Connection con, String name, String password) throws SQLException {
 		// Functions as above, but accepts and checks both username and password
 		// parameters
-		String sql = "SELECT user_class FROM bank_app.users WHERE user_name = ? AND user_password = ?";
+		String sql = "SELECT user_type FROM bank_app.users WHERE user_name = ? AND user_password = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 

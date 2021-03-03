@@ -7,8 +7,6 @@ import me.max.model.User;
 public class MainMenu implements Menu {
 	
 	public void display() {
-		System.out.println("menu " + Application.currentUser);
-
 		while(Application.currentUser == null) {
 			displayDefaultMenu();
 		}
