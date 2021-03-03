@@ -30,7 +30,7 @@ public class AccountDAOImpl implements AccountDAO {
 		ps.setString(4, type);
 		ps.setString(5, username);
 
-		ResultSet rs = ps.executeQuery(sql);
+		ResultSet rs = ps.executeQuery();
 
 		if (rs.next()) {
 			String status = rs.getString("account_status");
