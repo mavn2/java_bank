@@ -101,7 +101,6 @@ public class CustomerService {
 			// This check should be redundant, but still:
 			// ensures db operations have succeeded, then commits transaction;
 			if (checkA && checkB) {
-				System.out.println("Checked " + checkA + checkB);
 				con.commit();
 			} else {
 				con.rollback();

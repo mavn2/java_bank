@@ -39,6 +39,7 @@ public class CustomerServiceTest {
 		result.add(new Account("test1234", "testUser", "Savings", "Active", 100d, 100d));
 
 		accountDAO = mock(AccountDAO.class);
+		
 		when(accountDAO.insertAccount(any(Connection.class), eq("testUser"), eq(100d), eq("Checking")))
 				.thenReturn(new Account("test123", "testUser", "Checking", "Active", 100d, 100d));
 		when(accountDAO.getAccountById(any(Connection.class), eq("test123")))
