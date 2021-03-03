@@ -1,6 +1,12 @@
 package me.max.exceptions;
 
 public class TransactionException extends Exception {
+	
+	
+	/**
+	 * Generated serial id
+	 */
+	private static final long serialVersionUID = 5450341444359366955L;
 
 	public TransactionException() {
 		super();
