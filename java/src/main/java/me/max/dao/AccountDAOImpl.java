@@ -81,39 +81,52 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 	
 	@Override
-	public double getBalanceById(Connection con, String accountNumber) throws SQLException {
-		double result;
-		
-		String sql = "SELECT balance FROM bank_app.accounts WHERE account_owner = ?";
-		
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, accountNumber);
-		ResultSet rs = ps.executeQuery();
-		
-		if(rs.next()) {
-			result = rs.getDouble("balance");
-			return result;
-		}
-		
-		throw new SQLException("Error: could not get balance for account " + accountNumber);
-	}
+	public List<Account> getAllAcounts(Connection con) throws SQLException {
+		List<Account> result = new ArrayList<>(null);
 	
-	@Override
-	public double getAvailableById(Connection con, String accountNumber) throws SQLException {
-		double result; 
-		
-		String sql = "SELECT available_balance FROM bank_app.accounts WHERE account_owner = ?";
+		String sql = "SELECT * FROM bank_app.accounts;";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, accountNumber);
 		ResultSet rs = ps.executeQuery();
-		
-		if(rs.next()) {
-			result = rs.getDouble("available_balance");
-			return result;
+
+		// Iterate over result set, return a list of all Accounts
+		while (rs.next()) {
+			String accountNumber = rs.getString(2);
+			String accountOwner = rs.getString(3);
+			String accountType = rs.getString(4);
+			String accountStatus = rs.getString(5);
+			double balance = rs.getDouble(6);
+			double avBalance = rs.getDouble(7);
+
+			Account entry = new Account(accountNumber, accountOwner, accountType, accountStatus, balance, avBalance);
+			result.add(entry);
 		}
+
+		return result;
+	}
+
+	@Override
+	public List<Account> getAccountsByType(Connection con, String type) throws SQLException {
+		List<Account> result = new ArrayList<>(null);
 		
-		throw new SQLException("Error: could not get available balance for account " + accountNumber);
+		String sql = "SELECT * FROM bank_app.accounts WHERE account_type = ?;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, type);
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			String accountNumber = rs.getString(2);
+			String accountOwner = rs.getString(3);
+			String accountStatus = rs.getString(5);
+			double balance = rs.getDouble(6);
+			double avBalance = rs.getDouble(7);
+
+			Account entry = new Account(accountNumber, accountOwner, type, accountStatus, balance, avBalance);
+			result.add(entry);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -139,6 +152,42 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public double getBalanceById(Connection con, String accountNumber) throws SQLException {
+		double result;
+
+		String sql = "SELECT balance FROM bank_app.accounts WHERE account_owner = ?";
+
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, accountNumber);
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			result = rs.getDouble("balance");
+			return result;
+		}
+
+		throw new SQLException("Error: could not get balance for account " + accountNumber);
+	}
+
+	@Override
+	public double getAvailableById(Connection con, String accountNumber) throws SQLException {
+		double result;
+
+		String sql = "SELECT available_balance FROM bank_app.accounts WHERE account_owner = ?";
+
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, accountNumber);
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			result = rs.getDouble("available_balance");
+			return result;
+		}
+
+		throw new SQLException("Error: could not get available balance for account " + accountNumber);
 	}
 
 	@Override
@@ -233,7 +282,7 @@ public class AccountDAOImpl implements AccountDAO {
 		if (count != 1) {
 			throw new SQLException("Error: could not equalize balances for account: " + accountNumber);
 		}
-		
+
 		return true;
 	}
 }
