@@ -1,6 +1,6 @@
 --Seed Data:
 --Basic User Classes
-INSERT INTO user_classes (class_name)
+INSERT INTO user_types (type_name)
 VALUES
 ('Default'),
 ('Customer'),
@@ -19,14 +19,33 @@ VALUES
 ('Active'),
 ('Closed');
 
---Insert test/default 'Admin' user 
+--Insert test/default 'Admin' user w
 INSERT INTO users 
-	(user_name, user_password, first_name, last_name, phone_number, user_class)
+	(user_name, user_password, first_name, last_name, phone_number, user_type)
 VALUES ('Admin', 'password', 'John', 'Doe', '1234567890', 3);
 
+--Test Default Users
+INSERT INTO users
+	(user_name, user_password, first_name, last_name, phone_number, user_type)
+VALUES ('Test1', 'password', 'Jane', 'Doe', '1234567890', 1)
+
+INSERT INTO users
+	(user_name, user_password, first_name, last_name, phone_number, user_type)
+VALUES ('Test2', 'password', 'Bill', 'Biggs', '1234567890', 1)
+
+--Test user w/ accounts
+INSERT INTO users 
+	(user_name, user_password, first_name, last_name, phone_number, user_type)
+VALUES ('Test3', 'password', 'Cool', 'Customer', '1234567890', 2)
+
+--Test accounts
 INSERT INTO bank_app.accounts 
 	(account_number, balance, available_balance, account_type, account_owner) 
-VALUES ('testi11','100','100','Checking','Admin');
+VALUES ('12345','100','100','Checking','Test3'),
+	('12346','1000','1000','Savings','Test3');
+
 
 INSERT INTO bank_app.account_user (account_number, user_name)
-VALUES ('testi11','Admin');
+VALUES ('12345','Test3'),
+	('12346', 'Test3');
+

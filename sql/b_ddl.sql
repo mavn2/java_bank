@@ -1,7 +1,7 @@
 --Store user types (default, customer, employee)
-CREATE TABLE user_classes (
+CREATE TABLE user_types (
 id SERIAL PRIMARY KEY,
-class_name VARCHAR(50) NOT NULL
+type_name VARCHAR(50) NOT NULL
 --In a future, more complex app, permissions would be specified here for say, acount ownership types and employee levels
 );
 
@@ -11,12 +11,12 @@ CREATE TABLE users (
  user_id SERIAL PRIMARY KEY,
  user_name VARCHAR(50) UNIQUE NOT NULL,
  user_password VARCHAR(20) NOT NULL,
- user_class INT NOT NULL DEFAULT 1,
+ user_type INT NOT NULL DEFAULT 1,
  --User personal info
  first_name VARCHAR(100) NOT NULL,
  last_name VARCHAR(100) NOT NULL,
  phone_number VARCHAR(10) NOT NULL,
- CONSTRAINT fk_class FOREIGN KEY (user_class) REFERENCES user_classes(id)
+ CONSTRAINT fk_type FOREIGN KEY (user_type) REFERENCES user_types(id)
 );
 
 --Seems better to manage validation, account balances in java logic
