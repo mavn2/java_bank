@@ -5,12 +5,12 @@ import me.max.model.User;
 public class UserMenu implements Menu {
 
 	// Can hold data for user accessing app
-	public User user;
+	private User u;
 
 	// Custom constructor takes a user object as parameter,
 	// ensures access to relevant information
-	public UserMenu(User u) {
-		this.user = u;
+	public UserMenu(User user) {
+		u = user;
 	}
 
 	@Override
