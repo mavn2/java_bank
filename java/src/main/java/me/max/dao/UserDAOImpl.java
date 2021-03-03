@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import me.max.model.User;
 
@@ -28,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 			String firstName = rs.getString("first_name");
 			String lastName = rs.getString("last_name");
 			String phoneNumber = rs.getString("phone_number");
-			int type = rs.getInt("user_class");
+			int type = rs.getInt("user_type");
 
 			// Use those to create new User object
 			result = new User(userName, firstName, lastName, phoneNumber, type);
@@ -68,4 +70,55 @@ public class UserDAOImpl implements UserDAO {
 		return result = new User(username, firstName, lastName, phoneNumber, type);
 	}
 
+	@Override
+	public boolean updateUserStatus(Connection con, String username, int status) throws SQLException {
+		String sql = "UPDATE bank_app.users SET user_type = ? WHERE user_name = ?;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ps.setInt(1, status);
+		ps.setString(2, username);
+		
+		int count = ps.executeUpdate();
+		
+		if(count != 1) {
+			throw new SQLException("Error: could not change the satus of user " + username);
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public List<User> getAllUsers(Connection con) throws SQLException {
+		List<User> result = new ArrayList<>(null);
+		
+		String sql = "SELECT * FROM bank_app.users";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			User user = new User(rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(4));
+			result.add(user);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public List<User> getAllUsersByType(Connection con, int type) throws SQLException {
+		List<User> result = new ArrayList<>(null);
+		
+		String sql = "SELECT * FROM bank_app.users WHERE user_type = ?;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, type);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			User user = new User(rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(4));
+			result.add(user);
+		}
+		
+		return result;
+	}	
 }
