@@ -2,7 +2,10 @@ package me.max.ui;
 
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import me.max.exceptions.UserCreationException;
+import me.max.main.Application;
 import me.max.model.User;
 import me.max.services.UserService;
 import me.max.services.ValidationService;
@@ -10,6 +13,8 @@ import me.max.services.ValidationService;
 public class UserCreationMenu implements Menu {
 	UserService userService;
 	ValidationService validationService;
+
+	private static Logger log = Logger.getLogger(UserCreationMenu.class);
 
 	public UserCreationMenu() {
 		this.userService = new UserService();
@@ -36,12 +41,16 @@ public class UserCreationMenu implements Menu {
 			case 1:
 				break;
 			case 2:
-				makeUser();
+				User u = makeUser();
+				// Automatically log in newly created user
+				System.out.println("User creation successful! Logging you in.");
+				// Direct them to default user menu
+				Application.currentUser = u;
 				break;
 			default:
 				System.out.println("Please enter a valid selection.");
 			}
-		} while (choice != 1);
+		} while (choice != 1 && Application.currentUser == null);
 
 	}
 
@@ -76,7 +85,7 @@ public class UserCreationMenu implements Menu {
 				String passA = Menu.sc.next();
 				System.out.println("Please enter your password again");
 				String passB = Menu.sc.next();
-				System.out.println(passA + passB);
+
 				try {
 					password = validationService.checkIfMatchingPasswords(passA, passB);
 				} catch (UserCreationException e) {
@@ -103,6 +112,7 @@ public class UserCreationMenu implements Menu {
 		} catch (SQLException | UserCreationException e) {
 			System.out.println(e.getMessage());
 		}
+		log.info("New user " + result + "was created and saved in database.");
 		return result;
 	}
 

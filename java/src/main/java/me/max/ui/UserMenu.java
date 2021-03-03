@@ -18,7 +18,7 @@ public class UserMenu implements Menu {
 
 		int choice = 0;
 
-		do {
+		while (choice != 1) {
 			System.out.println("===============");
 			System.out.println("USER MENU");
 			System.out.println("===============");
@@ -36,7 +36,7 @@ public class UserMenu implements Menu {
 			case 2:
 				requestAccount();
 			}
-		} while (choice != 1);
+		};
 
 	}
 	

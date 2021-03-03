@@ -7,18 +7,20 @@ import me.max.model.User;
 public class MainMenu implements Menu {
 	
 	public void display() {
-		while(Application.currentUser == null) {
+		if (Application.currentUser == null) {
 			displayDefaultMenu();
 		}
 		
-		displayActiveMenu(Application.currentUser);
+		if(Application.currentUser != null) {
+			displayActiveMenu(Application.currentUser);
+		}
 	}
 
 	// display default menu
 	private void displayDefaultMenu() {
 		// User input is tracked in this integer var
 		int choice = 0;
-		do {
+		while (choice != 1 && Application.currentUser == null) {
 			System.out.println("===============");
 			System.out.println("Welcome To Bank");
 			System.out.println("===============");
@@ -51,10 +53,7 @@ public class MainMenu implements Menu {
 			default:
 				System.out.println("Please enter a valid selection.");
 			}
-			//Break out of loop after execution, allows currentUser to be checked
-			break;
-			//Will run again if needed
-		} while (choice != 1 && Application.currentUser == null);
+		};
 	}
 
 	// display tailored menu
