@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import me.max.main.Application;
 import me.max.model.Account;
 
 public class AccountDAOImpl implements AccountDAO {
@@ -40,6 +41,14 @@ public class AccountDAOImpl implements AccountDAO {
 			PreparedStatement psB = con.prepareStatement(sqlB);
 			psB.setString(1, accountNumber);
 			psB.setString(2, username);
+			
+			//Log successful account creation
+			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+			PreparedStatement psL = con.prepareStatement(sqlL);
+			psL.setString(1, accountNumber);
+			psL.setString(2, username);
+			psL.setString(3, "Created");
+			psL.executeUpdate();
 		}
 
 		result = new Account(accountNumber, username, type, "pending", startingBalance, startingBalance);
@@ -210,7 +219,16 @@ public class AccountDAOImpl implements AccountDAO {
 		if (count != 1) {
 			throw new SQLException("Error: could not activate account " + accountNumber);
 		}
-
+		
+		// Log successful activation
+		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+		PreparedStatement psL = con.prepareStatement(sqlL);
+		psL.setString(1, accountNumber);
+		String user = Application.currentUser.getUsername();
+		psL.setString(2, user);
+		psL.setString(3, "Activated");
+		psL.executeUpdate();
+		
 		return true;
 	}
 
@@ -222,11 +240,21 @@ public class AccountDAOImpl implements AccountDAO {
 		ps.setDouble(1, value);
 		ps.setString(2, accountNumber);
 		int count = ps.executeUpdate();
-
+		
 		if (count != 1) {
 			throw new SQLException("Error: could not deposit " + value + " in account " + accountNumber);
 		}
-
+		
+		// Log successful deposit
+		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+		PreparedStatement psL = con.prepareStatement(sqlL);
+		psL.setString(1, accountNumber);
+		String user = Application.currentUser.getUsername();
+		psL.setString(2, user);
+		psL.setString(3, "Deposit " + value);
+		psL.executeUpdate();
+		
+		
 		return true;
 	}
 
@@ -243,7 +271,16 @@ public class AccountDAOImpl implements AccountDAO {
 		if (count != 1) {
 			throw new SQLException("Error: could not withdraw " + value + " from account " + accountNumber);
 		}
-
+		
+		// Log successful withdrawal
+		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+		PreparedStatement psL = con.prepareStatement(sqlL);
+		psL.setString(1, accountNumber);
+		String user = Application.currentUser.getUsername();
+		psL.setString(2, user);
+		psL.setString(3, "Withdrawal " + value);
+		psL.executeUpdate();
+		
 		return true;
 	}
 
