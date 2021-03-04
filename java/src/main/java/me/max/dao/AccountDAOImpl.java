@@ -89,7 +89,7 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	@Override
 	public List<Account> getAllAcounts(Connection con) throws SQLException {
-		List<Account> result = new ArrayList<>(null);
+		List<Account> result = new ArrayList<>();
 	
 		String sql = "SELECT * FROM bank_app.accounts;";
 		
@@ -114,7 +114,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public List<Account> getAccountsByStatus(Connection con, String status) throws SQLException {
-		List<Account> result = new ArrayList<>(null);
+		List<Account> result = new ArrayList<>();
 		
 		String sql = "SELECT * FROM bank_app.accounts WHERE account_status = ?;";
 		
@@ -138,7 +138,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public List<Account> getAccountsByOwner(Connection con, String userName) throws SQLException {
-		List<Account> result = new ArrayList<>(null);
+		List<Account> result = new ArrayList<>();
 
 		String sql = "SELECT * FROM bank_app.accounts WHERE account_owner = ?;";
 
