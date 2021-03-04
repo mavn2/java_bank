@@ -2,4 +2,7 @@
 /java/target/
 /java/.metadata/
 /java/.settings/
+/java/.classpath
+/java/.project
+
 .*;
