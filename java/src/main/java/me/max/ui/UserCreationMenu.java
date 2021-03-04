@@ -27,7 +27,7 @@ public class UserCreationMenu implements Menu {
 
 		do {
 			System.out.println("===============");
-			System.out.println("CREATE USER");
+			System.out.println("* CREATE USER *");
 			System.out.println("===============");
 			System.out.println("1.) Go back");
 			System.out.println("2.) Enter your information");

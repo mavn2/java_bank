@@ -6,18 +6,23 @@ import java.util.List;
 
 import me.max.dao.AccountDAO;
 import me.max.dao.AccountDAOImpl;
+import me.max.dao.CustomerDAO;
+import me.max.dao.CustomerDAOImpl;
 import me.max.exceptions.AccountCreationException;
 import me.max.exceptions.TransactionException;
 import me.max.model.Account;
+import me.max.model.Customer;
 import me.max.model.User;
 import me.max.util.ConnectionUtil;
 
 public class CustomerService {
 	public AccountDAO accountDAO;
-
+	public CustomerDAO customerDAO;
+	
 	// Default Constructer, instantiates new DAO object w/ implemented methods
 	public CustomerService() {
 		this.accountDAO = new AccountDAOImpl();
+		this.customerDAO = new CustomerDAOImpl();
 	}
 
 	// Constructor for use in testing, allows mock DAO to be entered as param
@@ -197,4 +202,14 @@ public class CustomerService {
 
 		from.setCurrentBalance(from.getCurrentBalance() - amount);
 	}
+	
+	public Customer getCustomerAccount(String username) throws SQLException {
+		Customer result;
+		
+		try(Connection con = ConnectionUtil.getConnection()){
+			result = customerDAO.getCustomerByUsername(con, username);
+			return result;
+		}
+	}
+
 }

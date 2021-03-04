@@ -15,7 +15,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public Customer getCustomerByUsername(Connection con, String username) throws SQLException {
 		Customer result = null;
-		List<Account> accountResult = new ArrayList<>(null);
+		List<Account> accountResult = new ArrayList<>();
 
 		String sql = "SELECT c.*, a.* FROM bank_app.users c JOIN bank_app.accounts a ON c.user_name = a.account_owner WHERE c.user_name = ?;";
 
@@ -26,11 +26,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		// Check for rows in results, use first to set parent class fields if founds
 		if (rs.next()) {
 			result = new Customer(rs.getString("user_name"), rs.getString("first_name"), rs.getString("last_name"),
-					rs.getString("phone_number"), rs.getInt("phone_number"));
+					rs.getString("phone_number"), rs.getInt("user_type"));
+			
+			Account entry = new Account(rs.getString("account_number"), rs.getString("account_owner"),
+					rs.getString("account_type"), rs.getString("account_status"), rs.getDouble("balance"),
+					rs.getDouble("available_balance"));
+			accountResult.add(entry);
 		}
-
-		// Return cursor to original position
-		rs.beforeFirst();
 
 		// Iterate over all rows in result set, creating an Account object for each
 		// And adding those to the

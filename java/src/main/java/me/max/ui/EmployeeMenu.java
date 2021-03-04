@@ -22,7 +22,6 @@ public class EmployeeMenu implements Menu {
 	public void display() {
 		int choice = 0;
 
-		System.out.println();
 		System.out.println("===============");
 		System.out.println(" * MAIN MENU * ");
 		System.out.println("===============");

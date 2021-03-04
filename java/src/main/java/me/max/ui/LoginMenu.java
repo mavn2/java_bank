@@ -31,7 +31,6 @@ public class LoginMenu implements Menu {
 
 		int choice = 0;
 		
-		System.out.println();
 		System.out.println("================");
 		System.out.println(" * SIGN-IN * ");
 		System.out.println("================");

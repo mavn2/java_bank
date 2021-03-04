@@ -24,7 +24,6 @@ public class UserMenu implements Menu {
 
 		int choice = 0;
 		
-		System.out.println();
 		System.out.println("===============");
 		System.out.println(" * MAIN MENU *");
 		System.out.println("===============");
