@@ -234,7 +234,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public boolean accountDeposit(Connection con, String accountNumber, double value) throws SQLException {
-		String sql = "UPDATE bank_app.accounts SET balance = balance + MONEY(?) WHERE account_number = ?;";
+		String sql = "UPDATE bank_app.accounts SET balance = balance + (?) WHERE account_number = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, value);
@@ -260,7 +260,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public boolean accountWithdraw(Connection con, String accountNumber, double value) throws SQLException {
-		String sql = "UPDATE bank_app.accounts SET balance = balance - MONEY(?) WHERE account_number = ?;";
+		String sql = "UPDATE bank_app.accounts SET balance = balance - (?) WHERE account_number = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, value);
@@ -286,7 +286,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public boolean aBalDeposit(Connection con, String accountNumber, double value) throws SQLException {
-		String sql = "UPDATE bank_app.accounts SET available_balance = available_balance + MONEY(?) WHERE account_number = ?;";
+		String sql = "UPDATE bank_app.accounts SET available_balance = available_balance + (?) WHERE account_number = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, value);
@@ -302,7 +302,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public boolean aBalWithdraw(Connection con, String accountNumber, double value) throws SQLException {
-		String sql = "UPDATE bank_app.accounts SET available_balance = available_balance - MONEY(?) WHERE account_number = ?;";
+		String sql = "UPDATE bank_app.accounts SET available_balance = available_balance - (?) WHERE account_number = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, value);
