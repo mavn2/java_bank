@@ -102,6 +102,9 @@ public class CustomerMenu implements Menu {
 				// Get account for transfer, number for user feedback
 				Account choiceAccount = (accounts.get(index));
 				String choiceNum = choiceAccount.getAccountNumber();
+				//Get balance values for updates to client side object
+				double balance = choiceAccount.getCurrentBalance();
+				double aBalance = choiceAccount.getAvailableBalance();
 				
 				System.out.println("Enter withdrawal amount:");
 				amount = Double.parseDouble(Menu.sc.nextLine());
@@ -115,6 +118,8 @@ public class CustomerMenu implements Menu {
 					case "y":
 						System.out.println("Withdrawal confirmed");
 						customerService.withdrawFromAccount(choiceAccount, u, amount);
+						choiceAccount.setAvailableBalance(aBalance - amount);
+						choiceAccount.setCurrentBalance(balance - amount);
 						break;
 					case "n":
 						System.out.println("Withdrawal canceled");
@@ -122,7 +127,7 @@ public class CustomerMenu implements Menu {
 					default:
 						System.out.println("Please enter y or n");
 					}
-				} while (!status.equals("y") || !status.equals("n"));
+				} while (!status.equals("y") && !status.equals("n"));
 			}
 		} catch (NumberFormatException e) {
 			System.out.println("Please select account based on list number above.");
@@ -148,6 +153,9 @@ public class CustomerMenu implements Menu {
 				// Get account for transfer, number for user feedback
 				Account choiceAccount = (accounts.get(index));
 				String choiceNum = choiceAccount.getAccountNumber();
+				//Get balance values for updates to client side object
+				double balance = choiceAccount.getCurrentBalance();
+				double aBalance = choiceAccount.getAvailableBalance();
 				
 				System.out.println("Enter deposit amount:");
 				amount = Double.parseDouble(Menu.sc.nextLine());
@@ -160,7 +168,11 @@ public class CustomerMenu implements Menu {
 					switch (status) {
 					case "y":
 						System.out.println("Deposit confirmed");
+						//Send update to database
 						customerService.transferIntoAccount(choiceAccount, u, amount);
+						//Update client side object
+						choiceAccount.setAvailableBalance(aBalance +  amount);
+						choiceAccount.setCurrentBalance(balance + amount);
 						break;
 					case "n":
 						System.out.println("Deposit canceled");
