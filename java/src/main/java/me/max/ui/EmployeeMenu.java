@@ -141,12 +141,12 @@ public class EmployeeMenu implements Menu {
 	private void viewTransactionLog() {
 		try {
 			List<TransactionLog> logs = employeeService.getHistory();
-			System.out.println(logs);
-			System.out.println(" Account | User | Description | Date ");
+			
+			System.out.println("Account | User | Description | Date ");
 				
 			for (TransactionLog e : logs) {
 				String date = e.getDate().toString();
-				System.out.println(e.getAccountNumber() + " | " + e.getUsername() + " | " + e.getDesc() + " | " + e.getAccountNumber() + " | " + date);
+				System.out.println(e.getAccountNumber() + " | " + e.getUsername() + " | " + e.getDesc() + " | " + date);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
