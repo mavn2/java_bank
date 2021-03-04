@@ -77,8 +77,6 @@ public class EmployeeService {
 				log.info("User " + username + " type set to Customer by " + Application.currentUser);
 			}
 
-			// Failure to update with no other exception is likely fine-
-			// user is already customer- but could indicate issue in db
 			if (result == 0) {
 				log.warn("User " + username + "not updated to Customer");
 			}

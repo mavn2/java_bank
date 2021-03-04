@@ -42,7 +42,7 @@ public class MainMenu implements Menu {
 			// Execute code based on user choice
 			switch (choice) {
 			case 1:
-				System.out.println("Shutting down");
+				System.out.println("Shutting down.");
 				break;
 			case 2:
 				Menu newMenu = new UserCreationMenu();

@@ -42,6 +42,7 @@ public class EmployeeMenu implements Menu {
 
 			switch (choice) {
 			case 1:
+				System.out.println("Shutting down.");
 				break;
 			case 2:
 				viewAndApprove();

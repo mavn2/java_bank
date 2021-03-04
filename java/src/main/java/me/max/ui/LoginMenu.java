@@ -46,6 +46,7 @@ public class LoginMenu implements Menu {
 
 			switch (choice) {
 			case 1:
+				System.out.println("Shutting down.");
 				break;
 			case 2:
 				getUsername();

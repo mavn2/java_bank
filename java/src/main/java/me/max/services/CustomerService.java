@@ -2,7 +2,10 @@ package me.max.services;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import me.max.dao.AccountDAO;
 import me.max.dao.AccountDAOImpl;
@@ -12,13 +15,15 @@ import me.max.exceptions.AccountCreationException;
 import me.max.exceptions.TransactionException;
 import me.max.model.Account;
 import me.max.model.Customer;
+import me.max.model.Transfer;
 import me.max.model.User;
 import me.max.util.ConnectionUtil;
 
 public class CustomerService {
 	public AccountDAO accountDAO;
 	public CustomerDAO customerDAO;
-	
+	private static Logger log = Logger.getLogger(CustomerService.class);
+
 	// Default Constructer, instantiates new DAO object w/ implemented methods
 	public CustomerService() {
 		this.accountDAO = new AccountDAOImpl();
@@ -51,9 +56,9 @@ public class CustomerService {
 			return result;
 		}
 	}
-	
-	public List<Account> getUserAccounts(User user) throws SQLException{
-		try(Connection con = ConnectionUtil.getConnection()){
+
+	public List<Account> getUserAccounts(User user) throws SQLException {
+		try (Connection con = ConnectionUtil.getConnection()) {
 			List<Account> result = accountDAO.getAccountsByOwner(con, user.getUsername());
 			return result;
 		}
@@ -161,7 +166,7 @@ public class CustomerService {
 		}
 		try (Connection con = ConnectionUtil.getConnection()) {
 			con.setAutoCommit(false);
-			
+
 			boolean checkA;
 			try {
 				checkA = accountDAO.aBalWithdraw(con, from.getAccountNumber(), amount);
@@ -176,7 +181,8 @@ public class CustomerService {
 				transferIntoAccount(to, user, amount);
 				checkB = true;
 			} catch (SQLException | TransactionException e) {
-				//restore original availableBalance on object if transaction fails/is rolled back
+				// restore original availableBalance on object if transaction fails/is rolled
+				// back
 				from.setAvailableBalance(from.getAvailableBalance() + amount);
 				con.rollback();
 				throw e;
@@ -202,14 +208,87 @@ public class CustomerService {
 
 		from.setCurrentBalance(from.getCurrentBalance() - amount);
 	}
-	
+
 	public Customer getCustomerAccount(String username) throws SQLException {
 		Customer result;
-		
-		try(Connection con = ConnectionUtil.getConnection()){
+
+		try (Connection con = ConnectionUtil.getConnection()) {
 			result = customerDAO.getCustomerByUsername(con, username);
 			return result;
 		}
 	}
 
+	public void startTransfer(User user, Account account, String userTo, String accountTo, double amount)
+			throws SQLException {
+		User u = user;
+		Account a = account;
+
+		try (Connection con = ConnectionUtil.getConnection()) {
+			con.setAutoCommit(false);
+
+			int count = accountDAO.startTransfer(con, u.getUsername(), a.getAccountNumber(), userTo, accountTo, amount);
+			if (count == 1) {
+				boolean check = accountDAO.aBalWithdraw(con, account.getAccountNumber(), amount);
+				if (check == true) {
+					double current = a.getCurrentBalance();
+					a.setAvailableBalance(current - count);
+					con.commit();
+					log.info("User " + u.getUsername() + " sent transfer for " + amount + " to " + userTo);
+				}
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			throw e;
+		}
+	}
+
+	public void endTransfer(Account account, Transfer transfer, boolean approval) throws SQLException {
+		try (Connection con = ConnectionUtil.getConnection()) {
+			con.setAutoCommit(false);
+
+			int count = accountDAO.endTransfer(con, transfer.getId(), transfer.getuFrom(), transfer.getuTo(),
+					transfer.getaTo(), transfer.getAmount(), approval);
+			if (count == 1 && approval == true) {
+
+				boolean check = accountDAO.aBalDeposit(con, transfer.getaTo(), transfer.getAmount());
+				boolean checkB = accountDAO.accountDeposit(con, transfer.getaTo(), transfer.getAmount());
+
+				double current = account.getCurrentBalance();
+
+				account.setCurrentBalance(current + transfer.getAmount());
+				account.setAvailableBalance(current + transfer.getAmount());
+
+				if (check == true && checkB == true) {
+					log.info(transfer.getuTo() + " accepted transfer from " + transfer.getuFrom());
+					con.commit();
+				}
+
+			} else if (count == 1 && approval == false) {
+				boolean checkC = accountDAO.aBalDeposit(con, transfer.getaFrom(), transfer.getAmount());
+				if (checkC == true) {
+					log.info(transfer.getuTo() + " declined transfer from " + transfer.getuFrom());
+					con.commit();
+				}
+
+			} else {
+				con.rollback();
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			throw e;
+		}
+	}
+
+	public List<Transfer> getPendingTransfers(User u) throws SQLException {
+		try (Connection con = ConnectionUtil.getConnection()) {
+			List<Transfer> result = new ArrayList<>();
+
+			result = accountDAO.getPendingTransfersForUser(con, u.getUsername());
+			log.info(u.getUsername() + " requested their pending transfers");
+			return result;
+		} catch (SQLException e) {
+			log.error(e);
+			throw e;
+		}
+	}
 }
