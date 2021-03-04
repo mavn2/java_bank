@@ -350,7 +350,7 @@ public class AccountDAOImpl implements AccountDAO {
 	public int endTransfer(Connection con, int id, String userFrom, String userTo, String accountTo,
 			double amount, boolean approval) throws SQLException {
 		String sql = "UPDATE bank_app.account_transfers SET pending = FALSE, approved = ? WHERE id = ?;";
-		System.out.println(approval);
+
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setBoolean(1, approval);
 		ps.setInt(2, id);
