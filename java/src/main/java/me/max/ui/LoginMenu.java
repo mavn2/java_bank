@@ -33,7 +33,7 @@ public class LoginMenu implements Menu {
 
 		do {
 			System.out.println("================");
-			System.out.println("SIGN-IN MENU");
+			System.out.println(" * SIGN-IN * ");
 			System.out.println("================");
 			System.out.println("1.) Back");
 			System.out.println("2.) Sign in");

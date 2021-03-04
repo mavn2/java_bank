@@ -24,7 +24,9 @@ public class MainMenu implements Menu {
 			System.out.println("===============");
 			System.out.println("Welcome To Bank");
 			System.out.println("===============");
+			System.out.println();
 			System.out.println("*Please choose an option to continue*");
+			System.out.println();
 			System.out.println("1.) Exit Application");
 			System.out.println("2.) Create New Account");
 			System.out.println("3.) Sign in to account");

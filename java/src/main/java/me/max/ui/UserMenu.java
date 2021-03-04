@@ -26,10 +26,11 @@ public class UserMenu implements Menu {
 
 		while (choice != 1) {
 			System.out.println("===============");
-			System.out.println("USER MENU");
+			System.out.println(" * MAIN MENU *");
 			System.out.println("===============");
-			System.out.println("1.) Go back");
-			System.out.println("2.) Apply for account");
+			System.out.println("Welcome, " + u.getFirstName());
+			System.out.println("1.) Log Out and Quit");
+			System.out.println("2.) Apply for Account");
 
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -46,7 +47,6 @@ public class UserMenu implements Menu {
 				System.out.println("Please enter a valid selection");
 			}
 		}
-		;
 	}
 
 	private void requestAccount(){
@@ -57,7 +57,7 @@ public class UserMenu implements Menu {
 		boolean selected = false;
 
 		do {
-			System.out.println("Are you sure you want to apply for a " + accountType + " account with initial balance " + accountBalance);
+			System.out.println("Are you sure you want to apply for a " + accountType + " account with initial balance " + accountBalance + "?");
 			System.out.println("1.) NO, go back");
 			System.out.println("2.) YES, apply for account");
 			
@@ -82,7 +82,7 @@ public class UserMenu implements Menu {
 				customerService.requestNewAccount(u, accountBalance, accountType);
 				System.out.println("Application accepted! We will contact you by phone once your account has been approved.");
 			} catch (SQLException | AccountCreationException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		}
 	}
