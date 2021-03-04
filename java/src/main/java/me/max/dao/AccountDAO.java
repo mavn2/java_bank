@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import me.max.model.Account;
+import me.max.model.Transfer;
 
 public interface AccountDAO {
 	Account insertAccount(Connection con, String username, double startingBalance, String type) throws SQLException;
@@ -20,5 +21,7 @@ public interface AccountDAO {
 	boolean accountWithdraw(Connection con, String accountNumber, double value) throws SQLException;
 	boolean aBalDeposit(Connection con, String accountNumber, double value) throws SQLException;
 	boolean aBalWithdraw(Connection con, String accountNumber, double value) throws SQLException;
-	boolean setActualEqualAvailable(Connection con, String accountNumber) throws SQLException;
+	int startTransfer(Connection con, String userFrom, String accountFrom, String userTo, String accountTo, double amount) throws SQLException;
+	int endTransfer(Connection con, int id, String userFrom, String userTo, String accountTo, double amount, boolean approval) throws SQLException;
+	List<Transfer> getPendingTransfersForUser(Connection con, String username) throws SQLException;
 }

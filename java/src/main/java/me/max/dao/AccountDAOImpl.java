@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import me.max.main.Application;
 import me.max.model.Account;
+import me.max.model.Transfer;
 
 public class AccountDAOImpl implements AccountDAO {
 
@@ -17,11 +18,12 @@ public class AccountDAOImpl implements AccountDAO {
 	public Account insertAccount(Connection con, String username, double startingBalance, String type)
 			throws SQLException {
 
-		Account result = null;
+		Account result;
 
 		// Create new, unique identifying sequence as persistent label for account
 		String sql = "INSERT INTO bank_app.accounts (account_number, balance, available_balance, account_type, account_owner) VALUES (?,?,?,?,?);";
-		//This wouldn't work in a full scale app, but sufficient for current test purpose
+		// This wouldn't work in a full scale app, but sufficient for current test
+		// purpose
 		String accountNumber = UUID.randomUUID().toString().substring(0, 10);
 
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -33,7 +35,7 @@ public class AccountDAOImpl implements AccountDAO {
 		ps.setString(5, username);
 
 		int count = ps.executeUpdate();
-		
+
 		if (count == 1) {
 			// Currently not implementing multiple users per account,
 			// But this keeps that possibility open
@@ -41,8 +43,8 @@ public class AccountDAOImpl implements AccountDAO {
 			PreparedStatement psB = con.prepareStatement(sqlB);
 			psB.setString(1, accountNumber);
 			psB.setString(2, username);
-			
-			//Log successful account creation
+
+			// Log successful account creation
 			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 			PreparedStatement psL = con.prepareStatement(sqlL);
 			psL.setString(1, accountNumber);
@@ -97,13 +99,13 @@ public class AccountDAOImpl implements AccountDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public List<Account> getAllAcounts(Connection con) throws SQLException {
 		List<Account> result = new ArrayList<>();
-	
+
 		String sql = "SELECT * FROM bank_app.accounts;";
-		
+
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 
@@ -126,9 +128,9 @@ public class AccountDAOImpl implements AccountDAO {
 	@Override
 	public List<Account> getAccountsByStatus(Connection con, String status) throws SQLException {
 		List<Account> result = new ArrayList<>();
-		
+
 		String sql = "SELECT * FROM bank_app.accounts WHERE account_status = ?;";
-		
+
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, status);
 		ResultSet rs = ps.executeQuery();
@@ -171,7 +173,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public double getBalanceById(Connection con, String accountNumber) throws SQLException {
 		double result;
@@ -219,7 +221,7 @@ public class AccountDAOImpl implements AccountDAO {
 		if (count != 1) {
 			throw new SQLException("Error: could not activate account " + accountNumber);
 		}
-		
+
 		// Log successful activation
 		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 		PreparedStatement psL = con.prepareStatement(sqlL);
@@ -228,7 +230,7 @@ public class AccountDAOImpl implements AccountDAO {
 		psL.setString(2, user);
 		psL.setString(3, "Activated");
 		psL.executeUpdate();
-		
+
 		return true;
 	}
 
@@ -240,11 +242,11 @@ public class AccountDAOImpl implements AccountDAO {
 		ps.setDouble(1, value);
 		ps.setString(2, accountNumber);
 		int count = ps.executeUpdate();
-		
+
 		if (count != 1) {
 			throw new SQLException("Error: could not deposit " + value + " in account " + accountNumber);
 		}
-		
+
 		// Log successful deposit
 		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 		PreparedStatement psL = con.prepareStatement(sqlL);
@@ -253,8 +255,7 @@ public class AccountDAOImpl implements AccountDAO {
 		psL.setString(2, user);
 		psL.setString(3, "Deposit " + value);
 		psL.executeUpdate();
-		
-		
+
 		return true;
 	}
 
@@ -271,7 +272,7 @@ public class AccountDAOImpl implements AccountDAO {
 		if (count != 1) {
 			throw new SQLException("Error: could not withdraw " + value + " from account " + accountNumber);
 		}
-		
+
 		// Log successful withdrawal
 		String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 		PreparedStatement psL = con.prepareStatement(sqlL);
@@ -280,7 +281,7 @@ public class AccountDAOImpl implements AccountDAO {
 		psL.setString(2, user);
 		psL.setString(3, "Withdrawal " + value);
 		psL.executeUpdate();
-		
+
 		return true;
 	}
 
@@ -318,17 +319,78 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public boolean setActualEqualAvailable(Connection con, String accountNumber) throws SQLException {
-		String sql = "UPDATE bank_app.accounts SET balance = available_balance WHERE account_number = ?";
-
+	public int startTransfer(Connection con, String userFrom, String accountFrom, String userTo, String accountTo,
+			double amount) throws SQLException {
+		String sql = "INSERT INTO bank_app.account_transfers (user_from, account_from, user_to, account_to, amount) VALUES (?,?,?,?,?);";
+	
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, accountNumber);
+		
+		ps.setString(1,	userFrom);
+		ps.setString(2, accountFrom);
+		ps.setString(3, userTo);
+		ps.setString(4, accountTo);
+		ps.setDouble(5, amount);
+		
 		int count = ps.executeUpdate();
-
-		if (count != 1) {
-			throw new SQLException("Error: could not equalize balances for account: " + accountNumber);
+		
+		if(count == 1) {
+			// Log transfer start
+			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+			PreparedStatement psL = con.prepareStatement(sqlL);
+			psL.setString(1, accountFrom);
+			psL.setString(2, userFrom);
+			psL.setString(3, "Try " + amount + " to " + userTo + ": " + accountTo);
+			psL.executeUpdate();
 		}
+		
+		return count;
+	}
 
-		return true;
+	@Override
+	public int endTransfer(Connection con, int id, String userFrom, String userTo, String accountTo,
+			double amount, boolean approval) throws SQLException {
+		String sql = "UPDATE bank_app.account_transfers SET pending = FALSE, approved = ? WHERE id = ?;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setBoolean(1, approval);
+		ps.setInt(2, id);
+		
+		int count = ps.executeUpdate();
+		
+		if(count == 1) {
+			// Log transfer end
+			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
+			PreparedStatement psL = con.prepareStatement(sqlL);
+			psL.setString(1, accountTo);
+			psL.setString(2, userTo);
+			psL.setString(3, "Settled " + amount + "w/ " + userFrom + ", " + approval);
+			psL.executeUpdate();
+		}
+		
+		return count;
+	}
+
+	@Override
+	public List<Transfer> getPendingTransfersForUser(Connection con, String username) throws SQLException {
+		List<Transfer> result = new ArrayList<>();
+		
+		String sql = "SELECT * FROM bank_app.account_transfers WHERE user_to = ? AND pending = TRUE;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, username);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			int id = rs.getInt(1);
+			String userFrom = rs.getString(2);
+			String accountFrom = rs.getString(3);
+			String userTo = rs.getString(4);
+			String accountTo = rs.getString(5);
+			double amount = rs.getDouble(6);
+			
+			Transfer e = new Transfer(id, userFrom, accountFrom, userTo, accountTo, amount, true);
+			result.add(e);
+		}
+		return result;	
 	}
 }

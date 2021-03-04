@@ -67,3 +67,18 @@ CREATE TABLE account_history (
 	CONSTRAINT fk_user FOREIGN KEY (user_name) REFERENCES users(user_name)
 );
 
+CREATE TABLE account_transfers (
+	id SERIAL PRIMARY KEY,
+	user_from VARCHAR(50),
+	account_from VARCHAR(10),
+	user_to VARCHAR(50),
+	account_to VARCHAR(10),
+	amount NUMERIC,
+	pending BOOLEAN NOT NULL DEFAULT TRUE,
+	approved BOOLEAN,
+	CONSTRAINT fk_userFrom FOREIGN KEY (user_from) REFERENCES users(user_name),
+	CONSTRAINT fk_accountFrom FOREIGN KEY (account_from) REFERENCES accounts(account_number),
+	CONSTRAINT fk_userTo FOREIGN KEY (user_to) REFERENCES users(user_name),
+	CONSTRAINT fk_accountTo FOREIGN KEY (account_to) REFERENCES accounts(account_number)
+);
+
