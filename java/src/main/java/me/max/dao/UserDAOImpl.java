@@ -71,7 +71,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public boolean updateUserStatus(Connection con, String username, int status) throws SQLException {
+	public int updateUserStatus(Connection con, String username, int status) throws SQLException {
 		String sql = "UPDATE bank_app.users SET user_type = ? WHERE user_name = ?;";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -80,12 +80,11 @@ public class UserDAOImpl implements UserDAO {
 		ps.setString(2, username);
 		
 		int count = ps.executeUpdate();
+		// Result not checked, in case user is already customer-
+		// given where this method is called, a real failure to update here
+		// would mean an effectively fatal issue somewhere in db
 		
-		if(count != 1) {
-			throw new SQLException("Error: could not change the satus of user " + username);
-		}
-		
-		return true;
+		return count;
 	}
 	
 	@Override

@@ -5,13 +5,13 @@ import me.max.model.User;
 
 // Run on application launch, pass to login or create account
 public class MainMenu implements Menu {
-	
+
 	public void display() {
 		if (Application.currentUser == null) {
 			displayDefaultMenu();
 		}
-		
-		if(Application.currentUser != null) {
+
+		if (Application.currentUser != null) {
 			displayActiveMenu(Application.currentUser);
 		}
 	}
@@ -36,7 +36,7 @@ public class MainMenu implements Menu {
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {
-				//Default switch case handles error message here
+				// Default switch case handles error message here
 			}
 
 			// Execute code based on user choice
@@ -55,14 +55,15 @@ public class MainMenu implements Menu {
 			default:
 				System.out.println("Please enter a valid selection.");
 			}
-		};
+		}
+		;
 	}
 
 	// display tailored menu
 	private void displayActiveMenu(User user) {
 		int userType = user.getType();
-		switch(userType) {
-		case 1: 
+		switch (userType) {
+		case 1:
 			Menu userMenu = new UserMenu(user);
 			userMenu.display();
 			break;
@@ -71,8 +72,8 @@ public class MainMenu implements Menu {
 			customerMenu.display();
 			break;
 		case 3:
-			Menu employeeMenu= new EmployeeMenu(user);
+			Menu employeeMenu = new EmployeeMenu(user);
 			employeeMenu.display();
-		}	
+		}
 	}
 }

@@ -9,11 +9,14 @@ import org.apache.log4j.Logger;
 
 import me.max.dao.AccountDAO;
 import me.max.dao.AccountDAOImpl;
+import me.max.dao.TransactionLogDAO;
+import me.max.dao.TransactionLogDAOImpl;
 import me.max.dao.UserDAO;
 import me.max.dao.UserDAOImpl;
 import me.max.exceptions.AccountNotFoundException;
 import me.max.main.Application;
 import me.max.model.Account;
+import me.max.model.TransactionLog;
 import me.max.model.User;
 import me.max.util.ConnectionUtil;
 
@@ -22,11 +25,13 @@ public class EmployeeService {
 	private static Logger log = Logger.getLogger(EmployeeService.class);
 	public AccountDAO accountDAO;
 	public UserDAO userDAO;
+	public TransactionLogDAO logDAO;
 
 	// General use, custom no-args constructor
 	public EmployeeService() {
 		this.accountDAO = new AccountDAOImpl();
 		this.userDAO = new UserDAOImpl();
+		this.logDAO = new TransactionLogDAOImpl();
 	}
 
 	// Testing constructor
@@ -38,7 +43,7 @@ public class EmployeeService {
 	public List<Account> getPendingAccounts() throws SQLException, AccountNotFoundException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			List<Account> result = new ArrayList<>();
-					result = accountDAO.getAccountsByStatus(con, "Pending");
+			result = accountDAO.getAccountsByStatus(con, "Pending");
 			if (result.isEmpty()) {
 				log.warn("User " + Application.currentUser + " tried to retrieve list of pending accounts, found none");
 				throw new AccountNotFoundException("No pending accounts found.");
@@ -64,11 +69,21 @@ public class EmployeeService {
 		}
 	}
 
-	public boolean promoteUser(String username) throws  SQLException {
-		try(Connection con = ConnectionUtil.getConnection()){
-			boolean result = userDAO.updateUserStatus(con, username, 2);
-			log.info("User " + username + " type set to Customer by " + Application.currentUser);
+	public int promoteUser(String username) throws SQLException {
+		try (Connection con = ConnectionUtil.getConnection()) {
+			int result = userDAO.updateUserStatus(con, username, 2);
+
+			if (result == 1) {
+				log.info("User " + username + " type set to Customer by " + Application.currentUser);
+			}
+
+			// Failure to update with no other exception is likely fine-
+			// user is already customer- but could indicate issue in db
+			if (result == 0) {
+				log.warn("User " + username + "not updated to Customer");
+			}
 			return result;
+
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);
 			throw e;
@@ -90,14 +105,34 @@ public class EmployeeService {
 		}
 	}
 
-	public List<Account> getCustomerAccounts(String userName) throws SQLException {
+	public List<Account> getCustomerAccounts(String username) throws SQLException, AccountNotFoundException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			List<Account> result = accountDAO.getAccountsByOwner(con, userName);
+			List<Account> result = new ArrayList<>();
+			result = accountDAO.getAccountsByOwner(con, username);
 			log.info("User " + Application.currentUser + " retrieved info on customer's accounts");
+
+			if (result.isEmpty()) {
+				log.warn("No accounts found for user " + username);
+				throw new AccountNotFoundException("No accounts found for user " + username);
+			}
+
 			return result;
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);
 			throw e;
 		}
+	}
+	
+	public List<TransactionLog> getHistory() throws SQLException  {
+		List<TransactionLog> result = new ArrayList<>();
+		
+		try(Connection con = ConnectionUtil.getConnection()) {
+			result = logDAO.getTransactionLogs(con);	
+			log.info("Username " + Application.currentUser.getUsername() + " checked the transaction log");
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		
+		return result;
 	}
 }

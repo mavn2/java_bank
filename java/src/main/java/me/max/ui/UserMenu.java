@@ -23,15 +23,16 @@ public class UserMenu implements Menu {
 	public void display() {
 
 		int choice = 0;
+		
+		System.out.println();
+		System.out.println("===============");
+		System.out.println(" * MAIN MENU *");
+		System.out.println("===============");
+		System.out.println("Welcome, " + u.getFirstName());
+		System.out.println("1.) Log Out and Quit");
+		System.out.println("2.) Apply for Account");
 
-		while (choice != 1) {
-			System.out.println("===============");
-			System.out.println(" * MAIN MENU *");
-			System.out.println("===============");
-			System.out.println("Welcome, " + u.getFirstName());
-			System.out.println("1.) Log Out and Quit");
-			System.out.println("2.) Apply for Account");
-
+		do {
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {
@@ -46,41 +47,43 @@ public class UserMenu implements Menu {
 			default:
 				System.out.println("Please enter a valid selection");
 			}
-		}
+		} while (choice != 1);
 	}
 
-	private void requestAccount(){
+	private void requestAccount() {
 		String accountType = getAccountType();
 		Double accountBalance = getStartingBalance();
-		
+
 		int choice = 0;
 		boolean selected = false;
 
 		do {
-			System.out.println("Are you sure you want to apply for a " + accountType + " account with initial balance " + accountBalance + "?");
+			System.out.println("Are you sure you want to apply for a " + accountType + " account with initial balance "
+					+ accountBalance + "?");
 			System.out.println("1.) NO, go back");
 			System.out.println("2.) YES, apply for account");
-			
+
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {
 			}
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
 				selected = true;
 				break;
 			case 2:
 				selected = true;
 				break;
-				
+
 			}
 		} while (selected == false);
-		
-		if(selected == true && choice == 2) {
-			try{
+
+		if (selected == true && choice == 2) {
+			try {
 				customerService.requestNewAccount(u, accountBalance, accountType);
-				System.out.println("Application accepted! We will contact you by phone once your account has been approved.");
+				System.out.println(
+						"Application accepted! We will contact you by phone once your account has been approved.");
 			} catch (SQLException | AccountCreationException e) {
 				System.out.println(e.getMessage());
 			}
@@ -93,18 +96,18 @@ public class UserMenu implements Menu {
 		System.out.println("1.) Checking");
 		System.out.println("2.) Savings");
 		System.out.println("3.) Business");
-		
+
 		int choice = 0;
 		boolean selected = false;
 		String result = "";
-		
+
 		do {
 			try {
-					choice = Integer.parseInt(Menu.sc.nextLine());
-				} catch (NumberFormatException e) {
-				}
-			switch(choice) {
-			case 1: 
+				choice = Integer.parseInt(Menu.sc.nextLine());
+			} catch (NumberFormatException e) {
+			}
+			switch (choice) {
+			case 1:
 				result = "Checking";
 				selected = true;
 				break;
@@ -112,7 +115,7 @@ public class UserMenu implements Menu {
 				result = "Savings";
 				selected = true;
 				break;
-			case 3: 
+			case 3:
 				result = "Business";
 				selected = true;
 				break;
@@ -120,7 +123,7 @@ public class UserMenu implements Menu {
 				System.out.println("Please enter a valid selection");
 			}
 		} while (selected == false);
-		
+
 		return result;
 	}
 

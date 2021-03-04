@@ -47,6 +47,8 @@ public class AccountDAOImpl implements AccountDAO {
 		return result;
 	}
 
+	// Allows for many to many user/account implementation
+	@Override
 	public boolean pairAccountAndUser(Connection con, String accountNumber, String username) throws SQLException {
 		String sql = "INSERT INTO bank_app.account_user (account_number, user_name) VALUES (?,?);";
 

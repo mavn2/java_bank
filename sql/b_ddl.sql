@@ -62,7 +62,7 @@ CREATE TABLE account_history (
 	account_number VARCHAR(20) NOT NULL,
 	user_name VARCHAR(50) NOT NULL,
 	transaction_des VARCHAR(200) NOT NULL,
-	transaction_date TIMESTAMP,
+	transaction_date DATE NOT NULL DEFAULT CURRENT_DATE,
 	CONSTRAINT fk_account FOREIGN KEY (account_number) REFERENCES accounts(account_number),
 	CONSTRAINT fk_user FOREIGN KEY (user_name) REFERENCES users(user_name)
 );

@@ -49,3 +49,9 @@ INSERT INTO bank_app.account_user (account_number, user_name)
 VALUES ('12345','Test3'),
 	('12346', 'Test3');
 
+INSERT INTO bank_app.account_history 
+	(account_number, user_name, transaction_des) 
+VALUES ('12345','Test3','Created'),
+	('12346', 'Test3', 'Created');
+V
+
