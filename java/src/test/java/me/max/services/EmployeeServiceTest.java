@@ -46,7 +46,7 @@ public class EmployeeServiceTest {
 		accountDAO = mock(AccountDAO.class);
 		userDAO = mock(UserDAO.class);
 
-		when(accountDAO.getAccountsByType(any(Connection.class), eq("Pending"))).thenReturn(result);
+		when(accountDAO.getAccountsByStatus(any(Connection.class), eq("Pending"))).thenReturn(result);
 		when(accountDAO.approveAccount(any(Connection.class), eq("test123"))).thenReturn(true);
 		when(userDAO.getAllUsersByType(any(Connection.class), eq(2))).thenReturn(resultU);
 		when(accountDAO.getAccountsByOwner(any(Connection.class), eq("testUser"))).thenReturn(result);

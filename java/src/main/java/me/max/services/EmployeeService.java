@@ -2,6 +2,7 @@ package me.max.services;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -36,7 +37,8 @@ public class EmployeeService {
 
 	public List<Account> getPendingAccounts() throws SQLException, AccountNotFoundException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			List<Account> result = accountDAO.getAccountsByType(con, "Pending");
+			List<Account> result = new ArrayList<>();
+					result = accountDAO.getAccountsByStatus(con, "Pending");
 			if (result.isEmpty()) {
 				log.warn("User " + Application.currentUser + " tried to retrieve list of pending accounts, found none");
 				throw new AccountNotFoundException("No pending accounts found.");
@@ -55,6 +57,17 @@ public class EmployeeService {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			boolean result = accountDAO.approveAccount(con, accountNumber);
 			log.info("User " + Application.currentUser + " approved account " + accountNumber);
+			return result;
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	public boolean promoteUser(String username) throws  SQLException {
+		try(Connection con = ConnectionUtil.getConnection()){
+			boolean result = userDAO.updateUserStatus(con, username, 2);
+			log.info("User " + username + " type set to Customer by " + Application.currentUser);
 			return result;
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);

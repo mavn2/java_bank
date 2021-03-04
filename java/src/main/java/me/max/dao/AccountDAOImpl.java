@@ -113,23 +113,23 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public List<Account> getAccountsByType(Connection con, String type) throws SQLException {
+	public List<Account> getAccountsByStatus(Connection con, String status) throws SQLException {
 		List<Account> result = new ArrayList<>(null);
 		
-		String sql = "SELECT * FROM bank_app.accounts WHERE account_type = ?;";
+		String sql = "SELECT * FROM bank_app.accounts WHERE account_status = ?;";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, type);
+		ps.setString(1, status);
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
 			String accountNumber = rs.getString(2);
 			String accountOwner = rs.getString(3);
-			String accountStatus = rs.getString(5);
+			String accountClass = rs.getString(4);
 			double balance = rs.getDouble(6);
 			double avBalance = rs.getDouble(7);
 
-			Account entry = new Account(accountNumber, accountOwner, type, accountStatus, balance, avBalance);
+			Account entry = new Account(accountNumber, accountOwner, accountClass, status, balance, avBalance);
 			result.add(entry);
 		}
 
