@@ -89,7 +89,7 @@ public class CustomerService {
 			}
 
 			// This check should be redundant, but still:
-			// ensures db operations have succeeded, then commits transaction;
+			// ensures db operations have succeeded, then commit transaction;
 			if (checkA && checkB) {
 				con.commit();
 			} else {
