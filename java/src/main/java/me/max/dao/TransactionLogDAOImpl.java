@@ -16,7 +16,7 @@ public class TransactionLogDAOImpl implements TransactionLogDAO {
 	public List<TransactionLog> getTransactionLogs(Connection con) throws SQLException {
 		List<TransactionLog> result = new ArrayList<>();
 
-		String sql = "SELECT * FROM bank_app.account_history;";
+		String sql = "SELECT * FROM bank_app.account_history ORDER BY transaction_date DESC;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
