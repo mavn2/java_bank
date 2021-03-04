@@ -37,12 +37,12 @@ CREATE TABLE account_statuses (
 
 CREATE TABLE accounts (
 	account_id SERIAL PRIMARY KEY,
-	account_number VARCHAR(20) UNIQUE NOT NULL,
+	account_number VARCHAR(10) UNIQUE NOT NULL,
 	account_owner VARCHAR(50) NOT NULL,
 	account_type VARCHAR(20) NOT NULL,
 	account_status VARCHAR(20) DEFAULT 'Pending',
-	balance MONEY NOT NULL,
-	available_balance MONEY NOT NULL,
+	balance NUMERIC NOT NULL,
+	available_balance NUMERIC NOT NULL,
 	CONSTRAINT fk_owner FOREIGN KEY (account_owner) REFERENCES  users(user_name),
 	CONSTRAINT fk_type FOREIGN KEY (account_type) REFERENCES account_types(type_name),
 	CONSTRAINT fk_status FOREIGN KEY (account_status) REFERENCES account_statuses(status_name) 

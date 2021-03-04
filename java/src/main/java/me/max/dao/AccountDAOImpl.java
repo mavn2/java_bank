@@ -20,7 +20,8 @@ public class AccountDAOImpl implements AccountDAO {
 
 		// Create new, unique identifying sequence as persistent label for account
 		String sql = "INSERT INTO bank_app.accounts (account_number, balance, available_balance, account_type, account_owner) VALUES (?,?,?,?,?);";
-		String accountNumber = UUID.randomUUID().toString();
+		//This wouldn't work in a full scale app, but sufficient for current test purpose
+		String accountNumber = UUID.randomUUID().toString().substring(0, 10);
 
 		PreparedStatement ps = con.prepareStatement(sql);
 
@@ -30,12 +31,18 @@ public class AccountDAOImpl implements AccountDAO {
 		ps.setString(4, type);
 		ps.setString(5, username);
 
-		ResultSet rs = ps.executeQuery();
-
-		if (rs.next()) {
-			String status = rs.getString("account_status");
-			result = new Account(accountNumber, username, type, status, startingBalance, startingBalance);
+		int count = ps.executeUpdate();
+		
+		if (count == 1) {
+			// Currently not implementing multiple users per account,
+			// But this keeps that possibility open
+			String sqlB = "INSERT INTO INSERT INTO bank_app.account_user (account_number, user_name) VALUES(?,?);";
+			PreparedStatement psB = con.prepareStatement(sqlB);
+			psB.setString(1, accountNumber);
+			psB.setString(2, username);
 		}
+
+		result = new Account(accountNumber, username, type, "pending", startingBalance, startingBalance);
 
 		return result;
 	}

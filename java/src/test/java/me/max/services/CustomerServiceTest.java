@@ -73,7 +73,7 @@ public class CustomerServiceTest {
 
 	@Test
 	public void testValidAccountCreation() throws Exception {
-		Account actual = customerService.requestNewAccount(testUser, 100d, 1);
+		Account actual = customerService.requestNewAccount(testUser, 100d, "Checking");
 		Account expected = new Account("test123", "testUser", "Checking", "Active", 100d, 100d);
 		assertEquals(expected, actual);
 	}
@@ -81,7 +81,7 @@ public class CustomerServiceTest {
 	@Test(expected = AccountCreationException.class)
 	public void testInvalidAccountCreation() throws Exception {
 		@SuppressWarnings("unused")
-		Account actual = customerService.requestNewAccount(testUser, -100d, 1);
+		Account actual = customerService.requestNewAccount(testUser, -100d, "Checking");
 	}
 
 	@Test

@@ -25,26 +25,11 @@ public class CustomerService {
 		this.accountDAO = accountDAO;
 	}
 
-	public Account requestNewAccount(User user, double startingBalance, int typeSelection)
+	public Account requestNewAccount(User user, double startingBalance, String type)
 			throws AccountCreationException, SQLException {
 		// Ensure starting balance is valid
 		if (startingBalance <= 0) {
 			throw new AccountCreationException("Error: Account's initial balance should be greater than zero");
-		}
-
-		// Determine account type based on user input in menu
-		// No practical reason not to use another switch statement here
-		// But if/else seems to fit this logic better somehow
-		String type;
-		if (typeSelection == 1) {
-			type = "Checking";
-		} else if (typeSelection == 2) {
-			type = "Savings";
-		} else if (typeSelection == 3) {
-			type = "Business";
-		} else {
-			throw new AccountCreationException(
-					"Error: Input " + typeSelection + " could not be matched to an account type");
 		}
 
 		// Try with resources handles connection
