@@ -22,10 +22,11 @@ import me.max.util.ConnectionUtil;
 
 public class EmployeeService {
 
-	private static Logger log = Logger.getLogger(EmployeeService.class);
 	public AccountDAO accountDAO;
 	public UserDAO userDAO;
 	public TransactionLogDAO logDAO;
+	private static Logger log = Logger.getLogger(EmployeeService.class);
+
 
 	// General use, custom no-args constructor
 	public EmployeeService() {

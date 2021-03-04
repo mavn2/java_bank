@@ -23,7 +23,7 @@ public class UserMenu implements Menu {
 	public void display() {
 
 		int choice = 0;
-		
+
 		System.out.println("===============");
 		System.out.println(" * MAIN MENU *");
 		System.out.println("===============");
@@ -44,7 +44,7 @@ public class UserMenu implements Menu {
 				requestAccount();
 				break;
 			default:
-				System.out.println("Please enter a valid selection");
+				System.out.println("Please enter a valid selection.");
 			}
 		} while (choice != 1);
 	}
@@ -59,8 +59,8 @@ public class UserMenu implements Menu {
 		do {
 			System.out.println("Are you sure you want to apply for a " + accountType + " account with initial balance "
 					+ accountBalance + "?");
-			System.out.println("1.) NO, go back");
-			System.out.println("2.) YES, apply for account");
+			System.out.println("1.) NO, go back!");
+			System.out.println("2.) YES, apply for account!");
 
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -90,7 +90,7 @@ public class UserMenu implements Menu {
 	}
 
 	private String getAccountType() {
-		System.out.println("Please select an Account type from the list below");
+		System.out.println("Please select an Account type from the list below:");
 
 		System.out.println("1.) Checking");
 		System.out.println("2.) Savings");
@@ -119,7 +119,7 @@ public class UserMenu implements Menu {
 				selected = true;
 				break;
 			default:
-				System.out.println("Please enter a valid selection");
+				System.out.println("Please enter a valid selection.");
 			}
 		} while (selected == false);
 
@@ -129,7 +129,7 @@ public class UserMenu implements Menu {
 	private double getStartingBalance() {
 		double result = 0.0;
 
-		System.out.println("Please submit a starting balance for your account");
+		System.out.println("Please submit a starting balance for your account:");
 		result = Double.parseDouble(Menu.sc.nextLine());
 
 		return result;

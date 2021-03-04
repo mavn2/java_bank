@@ -8,7 +8,7 @@ public class Application {
 
 	public static User currentUser;
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
 		// Create new MainMenu object on app launch
 		Menu menu = new MainMenu();
 		menu.display();

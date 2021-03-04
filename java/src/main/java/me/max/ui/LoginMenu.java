@@ -30,7 +30,7 @@ public class LoginMenu implements Menu {
 		username = null;
 
 		int choice = 0;
-		
+
 		System.out.println("================");
 		System.out.println(" * SIGN-IN * ");
 		System.out.println("================");
@@ -70,7 +70,7 @@ public class LoginMenu implements Menu {
 	private void getUsername() {
 		String inputname;
 
-		System.out.println("Please Enter Your Username");
+		System.out.println("Please Enter Your Username:");
 
 		inputname = sc.next();
 		try {
@@ -85,7 +85,7 @@ public class LoginMenu implements Menu {
 	private void getPassword(String username) {
 		String inputpass;
 
-		System.out.println("Please enter password for " + username);
+		System.out.println("Please enter password for " + username + ":");
 
 		inputpass = sc.next();
 

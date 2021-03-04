@@ -1,6 +1,6 @@
 package me.max.exceptions;
 
-public class AccountCreationException extends Exception{
+public class AccountCreationException extends Exception {
 
 	private static final long serialVersionUID = 3397151042723206707L;
 
@@ -24,7 +24,5 @@ public class AccountCreationException extends Exception{
 	public AccountCreationException(Throwable cause) {
 		super(cause);
 	}
-	
-	
 
 }

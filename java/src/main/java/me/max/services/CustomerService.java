@@ -13,6 +13,7 @@ import me.max.dao.CustomerDAO;
 import me.max.dao.CustomerDAOImpl;
 import me.max.exceptions.AccountCreationException;
 import me.max.exceptions.TransactionException;
+import me.max.main.Application;
 import me.max.model.Account;
 import me.max.model.Customer;
 import me.max.model.Transfer;
@@ -50,9 +51,11 @@ public class CustomerService {
 			Account result = accountDAO.insertAccount(con, user.getUsername(), startingBalance, type);
 
 			if (result == null) {
+				log.error("Error: account creation by user " + Application.currentUser + " failed.");
 				throw new AccountCreationException("Error: Account creation failed");
 			}
 
+			log.info(Application.currentUser + "requested an account.");
 			return result;
 		}
 	}
@@ -60,6 +63,7 @@ public class CustomerService {
 	public List<Account> getUserAccounts(User user) throws SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			List<Account> result = accountDAO.getAccountsByOwner(con, user.getUsername());
+			log.info("Retrieved accounts for user " + user.getUsername());
 			return result;
 		}
 	}
@@ -106,6 +110,7 @@ public class CustomerService {
 
 		account.setAvailableBalance(account.getAvailableBalance() + amount);
 		account.setCurrentBalance(account.getCurrentBalance() + amount);
+		log.info(user.getUsername() + " deposited " + amount + " into " + account.getAccountNumber());
 		return account;
 	}
 
@@ -153,6 +158,7 @@ public class CustomerService {
 
 		account.setAvailableBalance(account.getAvailableBalance() - amount);
 		account.setCurrentBalance(account.getCurrentBalance() - amount);
+		log.info(user.getUsername() + " withdrew " + amount + " from " + account.getAccountNumber());
 		return account;
 	}
 
@@ -214,6 +220,7 @@ public class CustomerService {
 
 		try (Connection con = ConnectionUtil.getConnection()) {
 			result = customerDAO.getCustomerByUsername(con, username);
+			log.info("Created Customer object for " + username);
 			return result;
 		}
 	}

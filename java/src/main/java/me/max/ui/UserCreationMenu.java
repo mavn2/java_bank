@@ -67,7 +67,7 @@ public class UserCreationMenu implements Menu {
 
 		try {
 			do {
-				System.out.println("Please enter a username");
+				System.out.println("Please enter a username:");
 				String potentialName = Menu.sc.next();
 				// Check to see if userName is already in database
 				try {
@@ -82,9 +82,9 @@ public class UserCreationMenu implements Menu {
 
 			// Once username saved, attempt to get a confirmed password
 			do {
-				System.out.println("Please enter a password");
+				System.out.println("Please enter a password:");
 				String passA = Menu.sc.next();
-				System.out.println("Please enter your password again");
+				System.out.println("Please enter your password again.");
 				String passB = Menu.sc.next();
 
 				try {
@@ -99,13 +99,13 @@ public class UserCreationMenu implements Menu {
 			// These could be checked w/ regex, but currently loose-
 			// Less constraints, importance for these values
 
-			System.out.println("Please enter your first name");
+			System.out.println("Please enter your first name:");
 			firstName = Menu.sc.next();
 
-			System.out.println("Please enter your last name");
+			System.out.println("Please enter your last name:");
 			lastName = Menu.sc.next();
 
-			System.out.println("Please enter your phone number");
+			System.out.println("Please enter the digits of your phone number:");
 			phoneNumber = Menu.sc.next();
 
 			// Insert user into database, return complete User object

@@ -142,9 +142,9 @@ public class EmployeeMenu implements Menu {
 	private void viewTransactionLog() {
 		try {
 			List<TransactionLog> logs = employeeService.getHistory();
-			
+
 			System.out.println("Account | User | Description | Date ");
-				
+
 			for (TransactionLog e : logs) {
 				String date = e.getDate().toString();
 				System.out.println(e.getAccountNumber() + " | " + e.getUsername() + " | " + e.getDesc() + " | " + date);

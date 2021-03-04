@@ -9,7 +9,7 @@ public class Transfer {
 	private double amount;
 	private boolean pending;
 	private boolean approved;
-	
+
 	public Transfer() {
 		super();
 	}
@@ -88,6 +88,5 @@ public class Transfer {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
-	
-	
+
 }

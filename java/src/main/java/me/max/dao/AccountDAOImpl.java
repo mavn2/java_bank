@@ -322,18 +322,18 @@ public class AccountDAOImpl implements AccountDAO {
 	public int startTransfer(Connection con, String userFrom, String accountFrom, String userTo, String accountTo,
 			double amount) throws SQLException {
 		String sql = "INSERT INTO bank_app.account_transfers (user_from, account_from, user_to, account_to, amount) VALUES (?,?,?,?,?);";
-	
+
 		PreparedStatement ps = con.prepareStatement(sql);
-		
-		ps.setString(1,	userFrom);
+
+		ps.setString(1, userFrom);
 		ps.setString(2, accountFrom);
 		ps.setString(3, userTo);
 		ps.setString(4, accountTo);
 		ps.setDouble(5, amount);
-		
+
 		int count = ps.executeUpdate();
-		
-		if(count == 1) {
+
+		if (count == 1) {
 			// Log transfer start
 			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 			PreparedStatement psL = con.prepareStatement(sqlL);
@@ -342,22 +342,22 @@ public class AccountDAOImpl implements AccountDAO {
 			psL.setString(3, "Try " + amount + " to " + userTo + ": " + accountTo);
 			psL.executeUpdate();
 		}
-		
+
 		return count;
 	}
 
 	@Override
-	public int endTransfer(Connection con, int id, String userFrom, String userTo, String accountTo,
-			double amount, boolean approval) throws SQLException {
+	public int endTransfer(Connection con, int id, String userFrom, String userTo, String accountTo, double amount,
+			boolean approval) throws SQLException {
 		String sql = "UPDATE bank_app.account_transfers SET pending = FALSE, approved = ? WHERE id = ?;";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setBoolean(1, approval);
 		ps.setInt(2, id);
-		
+
 		int count = ps.executeUpdate();
-		
-		if(count == 1) {
+
+		if (count == 1) {
 			// Log transfer end
 			String sqlL = "INSERT INTO bank_app.account_history (account_number, user_name, transaction_des) VALUES (?,?,?);";
 			PreparedStatement psL = con.prepareStatement(sqlL);
@@ -366,31 +366,31 @@ public class AccountDAOImpl implements AccountDAO {
 			psL.setString(3, "Settled " + amount + "w/ " + userFrom + ", " + approval);
 			psL.executeUpdate();
 		}
-		
+
 		return count;
 	}
 
 	@Override
 	public List<Transfer> getPendingTransfersForUser(Connection con, String username) throws SQLException {
 		List<Transfer> result = new ArrayList<>();
-		
+
 		String sql = "SELECT * FROM bank_app.account_transfers WHERE user_to = ? AND pending = TRUE;";
-		
+
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, username);
 		ResultSet rs = ps.executeQuery();
-		
-		while(rs.next()) {
+
+		while (rs.next()) {
 			int id = rs.getInt(1);
 			String userFrom = rs.getString(2);
 			String accountFrom = rs.getString(3);
 			String userTo = rs.getString(4);
 			String accountTo = rs.getString(5);
 			double amount = rs.getDouble(6);
-			
+
 			Transfer e = new Transfer(id, userFrom, accountFrom, userTo, accountTo, amount, true);
 			result.add(e);
 		}
-		return result;	
+		return result;
 	}
 }

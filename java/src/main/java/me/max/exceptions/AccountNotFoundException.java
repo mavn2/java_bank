@@ -1,6 +1,6 @@
 package me.max.exceptions;
 
-public class AccountNotFoundException extends Exception{
+public class AccountNotFoundException extends Exception {
 
 	/**
 	 * Generated serial version ID
@@ -33,5 +33,4 @@ public class AccountNotFoundException extends Exception{
 		// TODO Auto-generated constructor stub
 	}
 
-	
 }

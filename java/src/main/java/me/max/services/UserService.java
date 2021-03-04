@@ -49,8 +49,9 @@ public class UserService {
 			if (result == null) {
 				throw new UserCreationException("User could not be created.");
 			}
-			
+
 			return result;
 		}
 	}
 }
+

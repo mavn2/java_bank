@@ -1,8 +1,7 @@
 package me.max.exceptions;
 
 public class TransactionException extends Exception {
-	
-	
+
 	/**
 	 * Generated serial id
 	 */
@@ -33,5 +32,5 @@ public class TransactionException extends Exception {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }
